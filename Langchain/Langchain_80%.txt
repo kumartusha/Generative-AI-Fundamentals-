@@ -1,0 +1,116 @@
+1. Core Concepts
+LangChain provides building blocks for working with LLMs in various ways.
+
+a. LLMs:
+Central to LangChain. Interact with models like OpenAI's GPT or Hugging Face transformers.
+Example:
+python
+Copy code
+from langchain.llms import OpenAI
+llm = OpenAI(model="text-davinci-003", temperature=0.7)
+print(llm("What is LangChain?"))
+b. Chains:
+Combine multiple steps into a single workflow (e.g., retrieve data, process it, and generate a response).
+Example:
+python
+Copy code
+from langchain.chains import SimpleSequentialChain
+from langchain.prompts import PromptTemplate
+from langchain.llms import OpenAI
+
+prompt = PromptTemplate(input_variables=["topic"], template="Write an introduction about {topic}.")
+chain = SimpleSequentialChain(llm=OpenAI(model="text-davinci-003"), prompt=prompt)
+print(chain.run("LangChain"))
+c. Agents:
+Dynamic systems that decide what actions to take (e.g., calling APIs, searching databases).
+Example:
+python
+Copy code
+from langchain.agents import initialize_agent, Tool
+from langchain.tools import tool
+from langchain.llms import OpenAI
+
+@tool
+def calculator(query: str) -> str:
+    return str(eval(query))
+
+tools = [Tool(name="Calculator", func=calculator, description="Performs math operations.")]
+agent = initialize_agent(tools, OpenAI(model="text-davinci-003"), agent="zero-shot-react-description")
+print(agent.run("What is 5 + 7?"))
+2. Memory
+Allows applications to retain context and conversation history.
+Types:
+Buffer Memory: Remembers everything in the conversation.
+Summary Memory: Summarizes the conversation for efficiency.
+Example:
+python
+Copy code
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationChain
+from langchain.llms import OpenAI
+
+memory = ConversationBufferMemory()
+conversation = ConversationChain(llm=OpenAI(model="text-davinci-003"), memory=memory)
+print(conversation.run("Hi, I'm interested in LangChain."))
+3. Prompt Templates
+Templates for creating structured prompts.
+
+Why It’s Important: Makes prompt engineering reusable and easy to manage.
+
+Example:
+
+python
+Copy code
+from langchain.prompts import PromptTemplate
+
+template = PromptTemplate(input_variables=["name"], template="What can you tell me about {name}?")
+print(template.format(name="LangChain"))
+4. Tools and Plugins
+Tools: Extend LangChain’s capabilities (e.g., search, calculators).
+Example:
+python
+Copy code
+from langchain.tools import tool
+
+@tool
+def search(query: str) -> str:
+    return f"Results for: {query}"
+5. Document Loaders and Vector Stores
+Document Loaders: Load text data (PDFs, HTML, etc.).
+
+Vector Stores: Store embeddings for similarity search.
+
+Use Case: Build a chatbot for querying large text documents.
+
+Example:
+
+python
+Copy code
+from langchain.document_loaders import TextLoader
+from langchain.vectorstores import FAISS
+from langchain.embeddings import OpenAIEmbeddings
+
+loader = TextLoader("data.txt")
+docs = loader.load()
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.from_documents(docs, embeddings)
+6. Retrieval-Augmented Generation (RAG)
+Combines document retrieval with LLMs for answering context-specific queries.
+Example:
+python
+Copy code
+from langchain.chains import RetrievalQA
+retriever = vectorstore.as_retriever()
+qa_chain = RetrievalQA(llm=OpenAI(), retriever=retriever)
+print(qa_chain.run("What is LangChain?"))
+7. Key Applications
+Chatbots: Memory + Chains + LLMs.
+Search Engines: Retrieval + Vector Stores.
+Agents: Decision-making tools.
+Data Summarization: Prompt engineering + Chains.
+Key Tools for Beginners
+LLMs: OpenAI API, Hugging Face Transformers.
+Vector Storage: FAISS, Pinecone.
+Memory: ConversationBufferMemory.
+Chains: Sequential or QA Chains.
+Deployment: Streamlit, FastAPI.
