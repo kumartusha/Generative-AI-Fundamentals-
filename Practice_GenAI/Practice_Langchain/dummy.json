@@ -1,0 +1,8 @@
+{
+    "examples": [
+      {"user": "Alice", "action": "submit the report"},
+      {"user": "Bob", "action": "review the document"}
+    ],
+    "template": "Dear {user}, please {action}."
+  }
+  

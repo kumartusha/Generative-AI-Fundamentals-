@@ -14,7 +14,9 @@ def connect_to_db():
     )
 
 
-# Title of the application
+# print(connect_to_db)
+
+# # Title of the application
 st.title("Special Form in Streamlit")
 
 # Create the form
@@ -57,6 +59,7 @@ if submitted:
         # Connect to the database
         db_connection = connect_to_db()
         cursor = db_connection.cursor()
+        print(cursor)
 
         # Insert form data into the database
         try:
@@ -66,7 +69,8 @@ if submitted:
                 (name, age, email, feedback, agree),
             )
             # st.write("Testing1")
-            db_connection.commit()
+
+            print(db_connection.commit())
             st.write("**Name:**", name)
             st.write("**Age:**", age)
             st.write("**Email:**", email)
