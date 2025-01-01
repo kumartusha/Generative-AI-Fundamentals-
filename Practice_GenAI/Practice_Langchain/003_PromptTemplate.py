@@ -129,6 +129,7 @@ Polite Instruction: "Dear {user}, please {action} as soon as possible."
 prompt1 = PromptTemplate(
     input_variables=["text"], template="Translate the following text to French: {text}"
 )
+
 prompt2 = PromptTemplate(
     input_variables=["text"], template="Summarize the following text: {text}"
 )
