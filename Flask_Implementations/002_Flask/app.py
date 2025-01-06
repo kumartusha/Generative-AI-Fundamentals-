@@ -27,5 +27,11 @@ def home():
     return render_template("index.html")
 
 
+# @app.route("/careers")
+# def home():
+#     print("Hello I'm the first")
+#     return render_template("careers.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8000)
